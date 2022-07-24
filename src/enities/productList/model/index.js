@@ -3,6 +3,7 @@ import {getProductList} from './thunks'
 
 const initialState = {
     products: [],
+    status: 'idle'
 }
 
  const productListSlice = createSlice({
@@ -14,8 +15,12 @@ const initialState = {
         },
     },
     extraReducers: (slice)=> {
-        slice.addCase(getProductList, (state,action) => {
-            state = action.payload
+        slice.addCase(getProductList.fulfilled, (state,action) => {
+            state.products = action.payload
+            state.status = 'success'
+        })
+        slice.addCase(getProductList.pending, (state) => {
+            state.status = 'loading'
         })
     }
 })

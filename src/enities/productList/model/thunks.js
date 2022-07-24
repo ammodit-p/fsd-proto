@@ -4,7 +4,7 @@ import {productsApi} from '../../../shared'
 export const getProductList = createAsyncThunk(
     'productList/getProductList',
     async () => {
-        const products = await productsApi.getProductList()
+        const products = await productsApi.getProductsList()
         return products
     }
 )

@@ -1,19 +1,25 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {Market, ProductsList} from '../../../enities'
 import {UI} from '../../../shared/ui'
 import {ProductItem} from './ProductItem'
 
 
 export const AddProduct = () => {
-    const {productsList} = ProductsList.useProductsList()
-    const [filteredProducts, setFilteredProducts] = useState(productsList)
+    const {productList, isLoading} = ProductsList.useProductsList()
+    const [filteredProducts, setFilteredProducts] = useState(productList)
+
+    useEffect(() => setFilteredProducts(productList), [productList])
 
     const handleFilterProducts = ({target: {value}}) => {
-        setFilteredProducts([...productsList].filter(item => item.name.includes(value.toLowerCase())))
+        setFilteredProducts([...productList].filter(item => item.name.includes(value.toLowerCase())))
+    }
+
+    if (isLoading) {
+        return <p>Loading....</p>
     }
 
     return (
-        <div style={{
+        <div className="AddProduct" style={{
             width: 650,
             height: 500,
             display: 'flex',

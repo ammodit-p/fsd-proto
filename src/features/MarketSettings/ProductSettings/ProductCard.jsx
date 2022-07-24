@@ -10,7 +10,7 @@ export const ProductCard = ({product}) => {
         setCurrenetProduct(product)
     }, [product])
 
-    const handleEditName = (value) => {
+    const handleEditName = ({target:{value}}) => {
         setCurrenetProduct(state => ({...state, name: value}))
     }
 

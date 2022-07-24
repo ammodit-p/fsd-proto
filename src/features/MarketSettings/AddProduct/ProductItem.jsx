@@ -1,6 +1,6 @@
 import React from 'react'
 
-import {Market, ProductsList} from '../../../enities'
+import {Market} from '../../../enities'
 
 export const ProductItem = ({product}) => {
   const market = Market.useMarket()
@@ -17,9 +17,9 @@ export const ProductItem = ({product}) => {
       }
   }
 
-  return <div style={{
-      width: 400,
-      height: 150,
+  return <div className="ProductItem" style={{
+      width: 150,
+      height: 50,
       border: '1px solid #eee',
       borderRadius: 12
   }}>

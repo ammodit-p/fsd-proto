@@ -4,10 +4,14 @@ import {ProductCard} from './ProductCard.jsx'
 
 
 export const ProductSettings = () => {
-    const {products} = Market.useMarket()
+    const {products, isLoading} = Market.useMarket()
+
+    if (isLoading) {
+        return <p>Loading....</p>
+    }
 
     return (
-        <div style={{
+        <div className="ProductSettings" style={{
             width: 650,
             height: 500,
             display: 'flex',

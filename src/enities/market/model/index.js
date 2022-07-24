@@ -5,6 +5,7 @@ import {getProducts, getOffers, getMarket} from './thunks'
 const initialState = {
     offers: [],
     products: [],
+    status: 'idle'
 }
 
  const marketSlice = createSlice({
@@ -22,15 +23,16 @@ const initialState = {
         }
     },
     extraReducers: (slice) => {
-        slice.addCase(getProducts.fulfilled, (state, action) => {
-            state.products = action.payload
-        }),
-        slice.addCase(getOffers.fulfilled, (state, action) => {
-            state.offers = action.payload
-        }),
         slice.addCase(getMarket.fulfilled, (state, action) => {
-            console.log('getMarket in store', action.payload)
-            state = action.payload
+            state.offers = action.payload.offers
+            state.products = action.payload.products
+            state.status = 'success'
+        })
+        slice.addCase(getMarket.pending, (state) => {
+            state.status = 'loading'
+        })
+        slice.addCase(getMarket.rejected, (state) => {
+            state.status = 'error'
         })
     }
 })

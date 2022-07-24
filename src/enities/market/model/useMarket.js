@@ -7,9 +7,12 @@ export const useMarket = () => {
     const dispatch = useDispatch()
     const offers = useSelector(MarketSelectors.getOffers)
     const products = useSelector(MarketSelectors.getProducts)
+    const isLoading = useSelector(MarketSelectors.getStatus) === 'loading'
+    const isError = useSelector(MarketSelectors.getStatus) === 'error'
+
 
     const dispatchProductsToStore = (products) => dispatch(MarketActions.setProducts(products))
-    const dispatchOffersToStore = (offers) => dispatch(MarketActions.setProducts(offers))
+    const dispatchOffersToStore = (offers) => dispatch(MarketActions.setOffers(offers))
 
     const getProductById = (id) => products.find(item => item.id === id)
     const getOfferById = (id) => offers.find(item => item.id === id)
@@ -22,7 +25,8 @@ export const useMarket = () => {
             return
         }
 
-       const updatedProducts =  [...products].splice(productIndex, 1, product)
+       const updatedProducts =  [...products]
+       updatedProducts[productIndex] = product
        dispatchProductsToStore(updatedProducts)
     }
 
@@ -30,9 +34,9 @@ export const useMarket = () => {
         const updatedProducts = [...products].filter(item => item.id !== product.id)
         dispatchProductsToStore(updatedProducts)
 
-        const hasSameOffer = hasProductsSameOffer(product.id, updatedProducts)
+        const hasSameOffer = hasProductsSameOffer(product.offerId, updatedProducts)
 
-        if (!hasSameOffer) {
+        if (!hasSameOffer && offers.length > 1) {
             const updatedOffers = offers.filter(item => item.id !== product.offerId)
             dispatchOffersToStore(updatedOffers)
         }
@@ -46,18 +50,15 @@ export const useMarket = () => {
     const editOffer = (offer) => {
         const offerIndex = offers.findIndex(item => item.id === offer.id)
 
-        if (!offerIndex) {
+        if (offerIndex === -1) {
             return
         }
 
-        const updatedOffers = [...offers].splice(offerIndex, 1, offer)
+        const updatedOffers = [...offers]
+        updatedOffers[offerIndex] = offer
         dispatchOffersToStore(updatedOffers)
     }
 
-    const deleteOffer = (offer) => {
-        const updatedOffers = offers.filter(item => item.id !== offer.id)
-        dispatchOffersToStore(updatedOffers)
-    }
 
     const addOffer = (offer) => {
         const updatedOffers = [...offers, offer]
@@ -74,6 +75,8 @@ export const useMarket = () => {
         editOffer,
         addOffer,
         offers,
-        products
+        products,
+        isLoading,
+        isError
     }
 }

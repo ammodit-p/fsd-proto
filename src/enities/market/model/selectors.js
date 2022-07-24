@@ -1,12 +1,17 @@
 import {createSelector} from '@reduxjs/toolkit'
 
-const getMarketSlice = createSelector(state => state?.market)
+const getMarketSlice = (state) => {
+    return state?.market
+}
 
-const getProducts  = createSelector(getMarketSlice, (state) => state?.products)
+const getProducts  = createSelector(getMarketSlice, (state) => state?.products ?? [])
 
-const getOffers = createSelector(getMarketSlice, (state) => state?.offers)
+const getOffers = createSelector(getMarketSlice, (state) => state?.offers ?? [])
+
+const getStatus = createSelector(getMarketSlice, state => state.status)
 
 export const MarketSelectors = {
     getProducts,
-    getOffers
+    getOffers,
+    getStatus
 }

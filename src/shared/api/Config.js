@@ -1,3 +1,39 @@
+const config = {
+    id: '123',
+    products: [
+        {
+            id: '123-1',
+            name: 'pr1',
+            offerId: '1'
+        }
+    ],
+    data: {
+        market: {
+            offers: [
+                {
+                    id: '1',
+                    offerType: 'site'
+                }
+            ]
+        },
+        slides: [
+            {
+                componentName: 'div',
+                children: [{
+                    componentName: 'button'
+                }]
+            }
+        ]
+    }
+}
+
+const apiGetConfig = async () => new Promise((res, rej) => setTimeout(() => {
+    res (config)
+}, 200))
+
+const apiSaveConfig = async (config) => setTimeout(() => config = config, 200)
+
+
 class Config {
     static _instance
     constructor () {
@@ -8,66 +44,50 @@ class Config {
         Config._instance = this;
     }
 
-    async #getConfig() {
-        console.log('hi i return config')
+    #getConfig = async () =>  {
         if(this.config) {
             return this.config
         }
-        const config = await setTimeout(() => ({
-            id: '123',
-            products: [
-                {
-                    id: '123-1',
-                    name: 'pr1',
-                    offerId: '1'
-                }
-            ],
-            data: {
-                market: {
-                    offers: [
-                        {
-                            id: '1',
-                            offerType: 'site'
-                        }
-                    ]
-                },
-                slides: [
-                    {
-                        componentName: 'div',
-                        children: [{
-                            componentName: 'button'
-                        }]
-                    }
-                ]
-            }
-        }), 200)
-        this.config = config
-        return config
+        try {
+
+        this.config = await apiGetConfig()
+        return this.config
+        }
+        catch(e) {
+            console.log('e', e)
+            throw e
+        }
     }
 
     async #saveConfig(config) {
-        await setTimeout(() => {
-            this.config = config
-        }, 200)
+        await apiSaveConfig(config)
+        this.config = config
+    }
+
+    /** Вопрос насколько в этом есть смысл. Конкретно этот метод нужен в слое процесс для сборки целого конфига и отправки на бэк
+     * Либо процесс у нас валидирует только какой-то кусок кофига, за который отвественно конкретно это приложение и отдает на сборку
+     * сюда все куски.
+     * Либо процесс (process) должен таки получить весь конфиг
+     */
+    getConfig = async () => {
+      return this.#getConfig().then((res) => {
+            
+            return res})
     }
 
     getProducts = async () => {
-        this.#getConfig()
-        .then(() => this.config?.products ?? [])
+       return  this.#getConfig()
+        .then((res) => {
+            
+            return res?.products ?? []})
     }
 
     getOffers = async () => {
-        this.#getConfig()
-        .then(() => this.config?.data?.market?.offers ?? [])
+       return  this.#getConfig()
+        .then((res) => {            
+            return res?.data?.market?.offers ?? []})
     }
 
-    saveProducts = (products) => {
-        this.config.products = products
-    }
-
-    saveOffers = (offers) => {
-        this.config.data.market.offers = offers
-    }
 
     saveProject = async () => {
         await this.#saveConfig()
@@ -75,4 +95,5 @@ class Config {
 }
 
 const configApi = new Config()
+configApi.getConfig()
 export {configApi}

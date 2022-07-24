@@ -1,3 +1,18 @@
+const products = [
+    {
+        id: "78797",
+        name: 'Product1'
+    },
+    {
+        id: "78796787",
+        name: 'Product2'
+    }
+]
+
+const apiGetProducts = async () => new Promise((res, rej) => setTimeout(() => {
+    res (products)
+}, 500))
+
 class ProductsList {
     static _instance
     constructor () {
@@ -12,18 +27,9 @@ class ProductsList {
         if(this.products) {
             return this.products
         }
-        const products = await setTimeout(() => ([
-            {
-                id: "78797",
-                name: 'Product1'
-            },
-            {
-                id: "78796787",
-                name: 'Product2'
-            }
-        ]), 200)
-        this.products = products
-        return products
+        
+        this.products = await apiGetProducts()
+        return this.products
     }
 }
 
