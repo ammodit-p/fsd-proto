@@ -1,0 +1,1 @@
+export const hasProductsSameOffer = (offerId, products) => products.some(item => item.offerId === offerId)
