@@ -4,8 +4,6 @@ export const useSaveProject = () => {
     const [needSaveProject, setNeedSaveProject] = useState(false)
     const [savingProject, setSavingProject] = useState(false)
 
-    console.log('needSaveProject in entities', needSaveProject)
-
     const saveProject = () => {
         setNeedSaveProject(true)
         setSavingProject(true)

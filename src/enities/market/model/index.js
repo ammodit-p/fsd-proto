@@ -1,6 +1,6 @@
 // eslint-disable-file
 import { createSlice } from '@reduxjs/toolkit'
-import {getProducts, getOffers, getMarket} from './thunks'
+import {getMarket} from './thunks'
 
 const initialState = {
     offers: [],
@@ -41,8 +41,3 @@ export const MarketActions = marketSlice.actions
 
 export const MarketReducer = marketSlice.reducer
 
-export const MarketOperations = {
-    getProducts,
-    getOffers,
-    getMarket
-}

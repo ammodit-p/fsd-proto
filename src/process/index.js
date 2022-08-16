@@ -1,10 +1,10 @@
 import { useEffect } from 'react'
 import * as Entities from '../enities'
 import {configApi} from '../shared'
-import { useDispatch, batch } from 'react-redux'
-import {Market} from '../enities'
+import { useDispatch } from 'react-redux'
 import {ProductsList} from '../enities'
 import { useLocation } from 'react-router-dom'
+import {useEventBus, DataReceiveMessages} from '../shared'
 
 /** Это слой с самой верхнеуровненой БЛ, выше только инициализация приложения */
 
@@ -18,21 +18,18 @@ export const useProcess = () => {
     const {products, offers, isError} = Entities.Market.useMarket()
 
     const dispatch = useDispatch()
+    const {publish} = useEventBus()
     const location = useLocation()
 
-
-    useEffect(() => {
-/** При загрузке приложения получаем данные из конфига */
-        dispatch(Market.MarketOperations.getMarket())
-        .catch(e => alert(e))
-    
+    useEffect(()=> {
+        publish({topic: DataReceiveMessages.getConfigData})
     }, [])
 
     useEffect(() => {
         if (isError) {
             alert('ERROR')
         }
-    })
+    }, [isError])
 
     useEffect(() => {
         
@@ -59,7 +56,6 @@ export const useProcess = () => {
         }
 
         await configApi.saveProject(newConfig)
-        console.log('hi')
         setSavedProject()
     }
 

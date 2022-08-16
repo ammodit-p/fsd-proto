@@ -1,21 +1,6 @@
 import {createAsyncThunk} from '@reduxjs/toolkit'
 import {configApi} from '../../../shared'
 
-export const getProducts = createAsyncThunk(
-    'market/getProducts',
-    async () => {
-        const products = await configApi.getProducts()
-        return products
-    }
-)
-
-export const getOffers = createAsyncThunk(
-    'market/getOffers',
-    async () => {
-        const offers = await configApi.getOffers()
-        return offers
-    }
-)
 
 export const getMarket = createAsyncThunk(
     'market/getMarket',
@@ -31,3 +16,7 @@ export const getMarket = createAsyncThunk(
        }
     }
 )
+
+export const MarketOperations = {
+    getMarket
+}

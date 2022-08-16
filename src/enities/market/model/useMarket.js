@@ -1,10 +1,14 @@
 import {useSelector, useDispatch} from 'react-redux'
 import {MarketSelectors} from './selectors'
 import {MarketActions} from '.'
+import {MarketOperations} from './thunks'
 import {hasProductsSameOffer} from '../utils'
+import {useEventBus, DataReceiveMessages} from '../../../shared'
+import { useEffect } from 'react'
 
 export const useMarket = () => {
     const dispatch = useDispatch()
+    const {subscribe} = useEventBus()
     const offers = useSelector(MarketSelectors.getOffers)
     const products = useSelector(MarketSelectors.getProducts)
     const isLoading = useSelector(MarketSelectors.getStatus) === 'loading'
@@ -13,6 +17,15 @@ export const useMarket = () => {
 
     const dispatchProductsToStore = (products) => dispatch(MarketActions.setProducts(products))
     const dispatchOffersToStore = (offers) => dispatch(MarketActions.setOffers(offers))
+    const dipatchGetMarket = () => dispatch(MarketOperations.getMarket())
+
+    useEffect(() => {
+        const dataReceiveListener = subscribe(DataReceiveMessages.getConfigData, dipatchGetMarket)
+        setSubscribed(true)
+        return () => {
+            dataReceiveListener.unsubscribe()
+        }
+    }, [])
 
     const getProductById = (id) => products.find(item => item.id === id)
     const getOfferById = (id) => offers.find(item => item.id === id)
