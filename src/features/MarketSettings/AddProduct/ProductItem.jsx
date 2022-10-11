@@ -3,17 +3,16 @@ import React from 'react'
 import {Market} from '../../../enities'
 
 export const ProductItem = ({product}) => {
-  const market = Market.useMarket()
 
-  const isProductInConfig = Boolean(market.getProductById(product.id))
+  const isProductInConfig = false
 
 
   const handleToggleProduct = ({target: {checked}}) => {
       if (checked) {
-        market.addProduct(product)
+        Market.addProduct(product)
       } 
       if(!checked) {
-        market.deleteProduct(product)
+        Market.deleteProduct(product)
       }
   }
 

@@ -1,10 +1,14 @@
 import React from 'react'
 import {Market} from '../../../enities'
 import {ProductCard} from './ProductCard.jsx'
+import {useStore} from 'effector-react'
 
 
 export const ProductSettings = () => {
-    const {products, isLoading} = Market.useMarket()
+    const products = Market.useProducts()
+    const isLoading = useStore(Market.isLoading)
+    console.log('products', products)
+    
 
     if (isLoading) {
         return <p>Loading....</p>

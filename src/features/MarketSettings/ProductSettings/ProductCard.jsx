@@ -3,7 +3,7 @@ import {Market} from '../../../enities'
 import {UI} from '../../../shared'
 
 export const ProductCard = ({product}) => {
-    const market = Market.useMarket()
+
     const [currentProduct, setCurrenetProduct] = useState(product)
 
     useEffect(() => {
@@ -14,9 +14,9 @@ export const ProductCard = ({product}) => {
         setCurrenetProduct(state => ({...state, name: value}))
     }
 
-    const handleSaveChanges = () => market.editProduct(currentProduct)
+    const handleSaveChanges = () => Market.editProduct(currentProduct)
 
-    const handleDelete = () => market.deleteProduct(product)
+    const handleDelete = () => Market.deleteProduct(product)
 
     return (
         <div style={{

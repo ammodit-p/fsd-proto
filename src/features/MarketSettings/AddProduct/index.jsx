@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import {Market, ProductsList} from '../../../enities'
+import {ProductsList} from '../../../enities'
 import {UI} from '../../../shared/ui'
 import {ProductItem} from './ProductItem'
 
@@ -7,8 +7,6 @@ import {ProductItem} from './ProductItem'
 export const AddProduct = () => {
     const {productList, isLoading} = ProductsList.useProductsList()
     const [filteredProducts, setFilteredProducts] = useState(productList)
-
-    useEffect(() => setFilteredProducts(productList), [productList])
 
     const handleFilterProducts = ({target: {value}}) => {
         setFilteredProducts([...productList].filter(item => item.name.includes(value.toLowerCase())))

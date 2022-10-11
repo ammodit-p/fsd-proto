@@ -1,7 +1,7 @@
-import {useMarket} from './model/useMarket'
-import {MarketReducer} from './model'
+import {marketApi, isLoading, selectors} from './model/store'
 
 export const Market = {
-    useMarket,
-    MarketReducer,
+    ...marketApi,
+    isLoading,
+    ...selectors
 }

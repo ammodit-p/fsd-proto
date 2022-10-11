@@ -1,5 +1,5 @@
 
-import {SaveButton} from './Save'
+import {SaveButton} from './save'
 import {useSaveProject} from './useSaveProject.js'
 
 export const Save = {

@@ -1,8 +1,7 @@
-import {createAsyncThunk} from '@reduxjs/toolkit'
+import {createEffect} from 'effector-logger'
 import {productsApi} from '../../../shared'
 
-export const getProductList = createAsyncThunk(
-    'productList/getProductList',
+export const getProductList = createEffect(
     async () => {
         const products = await productsApi.getProductsList()
         return products

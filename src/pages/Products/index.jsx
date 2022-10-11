@@ -4,7 +4,9 @@ import {
     AddProduct
 } from '../../features'
 
-export const ProductsPage = () => (
+export const ProductsPage = () => {
+    console.log('render product page')
+    return (
     <div style={{
         width: '100%',
         height: '100%',
@@ -15,4 +17,4 @@ export const ProductsPage = () => (
         <AddProduct />
         <ProductSettings />
     </div>
-)
+)}

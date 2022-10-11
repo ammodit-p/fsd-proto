@@ -1,19 +1,13 @@
-import {createAsyncThunk} from '@reduxjs/toolkit'
+import {createEffect} from 'effector-logger'
 import {configApi} from '../../../shared'
 
 
-export const getMarket = createAsyncThunk(
-    'market/getMarket',
+export const getMarket = createEffect(
     async () => {
-       try {
         const offers = await configApi.getOffers()
         const products = await configApi.getProducts()
         
         return {offers, products}
-       } catch (e) {
-           console.log('thunk catch error', e)
-           throw e
-       }
     }
 )
 

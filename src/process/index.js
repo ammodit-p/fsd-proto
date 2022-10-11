@@ -1,10 +1,8 @@
 import { useEffect } from 'react'
 import * as Entities from '../enities'
 import {configApi} from '../shared'
-import { useDispatch } from 'react-redux'
-import {ProductsList} from '../enities'
 import { useLocation } from 'react-router-dom'
-import {useEventBus, DataReceiveMessages} from '../shared'
+import {ReceiveDataEvents} from '../shared'
 
 /** Это слой с самой верхнеуровненой БЛ, выше только инициализация приложения */
 
@@ -15,21 +13,20 @@ export const useProcess = () => {
  * не меняется состояние флага и ломается логика
  */
     const {needSaveProject, setSavedProject} = Entities.Save.useSaveProject()
-    const {products, offers, isError} = Entities.Market.useMarket()
+    const products = Entities.Market.useProducts()
+    const offers = Entities.Market.useOffers()
 
-    const dispatch = useDispatch()
-    const {publish} = useEventBus()
     const location = useLocation()
 
     useEffect(()=> {
-        publish({topic: DataReceiveMessages.getConfigData})
+        ReceiveDataEvents.receiveConfigData()
     }, [])
 
-    useEffect(() => {
-        if (isError) {
-            alert('ERROR')
-        }
-    }, [isError])
+    // useEffect(() => {
+    //     if (isError) {
+    //         alert('ERROR')
+    //     }
+    // }, [isError])
 
     useEffect(() => {
         
@@ -37,7 +34,7 @@ export const useProcess = () => {
  * данные только там где они нужны
 */
         if (!location.pathname.includes('offers')) {
-            dispatch(ProductsList.ProductsListOperations.getProductList())
+            console.log('i need receive profucts list')
         }
     }, [location])
 

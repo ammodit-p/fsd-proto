@@ -1,26 +1,28 @@
 import React, { useState, useEffect } from 'react'
+import { useStore } from 'effector-react'
 import {Market} from '../../../enities'
 import {UI} from '../../../shared'
 
 export const OfferSettings = () => {
-    const market = Market.useMarket()
-    const [selectedProduct, setSelectedProduct] = useState(market?.products[0])
-    const getCurrentOffer = () => market.getOfferById(selectedProduct?.offerId)
-    const [curentOffer, setCurrentOffer] = useState(getCurrentOffer())
+    const products = Market.useProducts()
+    const [selectedProduct, setSelectedProduct] = useState(products[0])
+    const offerById = Market.useOffer(selectedProduct?.offerId)
+    const [curentOffer, setCurrentOffer] = useState(offerById)
+    const isLoading = useStore(Market.isLoading)
 
     useEffect(() => {
-        setSelectedProduct(market?.products[0])
-        setCurrentOffer(getCurrentOffer())
-    }, [market?.products[0], selectedProduct])
+        setSelectedProduct(products[0])
+        setCurrentOffer(offerById)
+    }, [products, selectedProduct])
 
-    const handleSelectProduct = (id) => setSelectedProduct(market.getProductById(id))
+    const handleSelectProduct = (id) => setSelectedProduct(products.find(item => item.id === id))
 
     const handleEditOffer = ({target: {value}}) => setCurrentOffer(state => ({...state, offerType: value}))
 
     const handleSaveOffer = ()=> {
-        market.editOffer(curentOffer)}
+        Market.editOffer(curentOffer)}
 
-    if (market.isLoading) {
+    if (isLoading) {
         return <p>Loading....</p>
     }
     
@@ -40,7 +42,7 @@ export const OfferSettings = () => {
                 width: '100%',
                 alignItems: 'center'
             }}>
-                {market.products.map(({id, name}) =><label key={id}>{name}<input checked={selectedProduct?.id === id} type="radio" onChange={() => handleSelectProduct(id)}></input></label> )}
+                {products.map(({id, name}) =><label key={id}>{name}<input checked={selectedProduct?.id === id} type="radio" onChange={() => handleSelectProduct(id)}></input></label> )}
             </fieldset>
    
         </div>
